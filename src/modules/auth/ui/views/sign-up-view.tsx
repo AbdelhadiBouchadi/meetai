@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent } from '@/components/ui/card';
 import React, { useState } from 'react';
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 import {
   Form,
   FormControl,
@@ -18,8 +19,8 @@ import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Loader2, OctagonAlertIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z
   .object({
@@ -59,11 +60,33 @@ const SignUpView = () => {
         name: data.name,
         email: data.email,
         password: data.password,
+        callbackURL: '/',
       },
       {
         onSuccess: () => {
           setPending(false);
           router.push('/');
+        },
+        onError: ({ error }) => {
+          setPending(false);
+          setError(error.message);
+        },
+      }
+    );
+  };
+
+  const onSocialSubmit = (provider: 'github' | 'google') => {
+    setPending(true);
+    setError(null);
+
+    authClient.signIn.social(
+      {
+        provider: provider,
+        callbackURL: '/',
+      },
+      {
+        onSuccess: () => {
+          setPending(false);
         },
         onError: ({ error }) => {
           setPending(false);
@@ -191,7 +214,15 @@ const SignUpView = () => {
                     type="button"
                     className="w-full"
                     disabled={pending}
+                    onClick={() => {
+                      onSocialSubmit('google');
+                    }}
                   >
+                    {pending ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <FaGoogle className="mr-2 h-4 w-4" />
+                    )}
                     Google
                   </Button>
                   <Button
@@ -199,7 +230,15 @@ const SignUpView = () => {
                     type="button"
                     className="w-full"
                     disabled={pending}
+                    onClick={() => {
+                      onSocialSubmit('github');
+                    }}
                   >
+                    {pending ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <FaGithub className="mr-2 h-4 w-4" />
+                    )}
                     Github
                   </Button>
                 </div>
