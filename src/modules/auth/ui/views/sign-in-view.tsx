@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent } from '@/components/ui/card';
 import React, { useState } from 'react';
-import { FaGoogle, FaGithub } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
 import {
   Form,
   FormControl,
@@ -169,7 +170,7 @@ const SignInView = () => {
                     {pending ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
-                      <FaGoogle className="mr-2 h-4 w-4" />
+                      <FcGoogle className="mr-2 size-6" />
                     )}
                     Google
                   </Button>
@@ -185,7 +186,7 @@ const SignInView = () => {
                     {pending ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
-                      <FaGithub className="mr-2 h-4 w-4" />
+                      <FaGithub className="mr-2 size-6" />
                     )}
                     Github
                   </Button>
@@ -202,7 +203,7 @@ const SignInView = () => {
               </div>
             </form>
           </Form>
-          <div className="bg-radial from-green-500 to-green-800 relative hidden md:flex flex-col gap-y-4 items-center justify-center ">
+          <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center ">
             <img src="/logo.svg" alt="Image " className="size-[148px] " />
             <p className="text-2xl font-semibold text-white">Meet.AI</p>
           </div>
