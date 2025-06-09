@@ -1,5 +1,6 @@
 import { SidebarProvider } from '@/components/ui/sidebar';
-import DashboardSiderbar from '@/modules/dashboard/ui/views/dashboard-sidebar';
+import DashboardNavbar from '@/modules/dashboard/ui/views/dashboard-navbar';
+import DashboardSidebar from '@/modules/dashboard/ui/views/dashboard-sidebar';
 import React from 'react';
 
 type Props = {
@@ -9,8 +10,9 @@ type Props = {
 const DashboardLayout = ({ children }: Props) => {
   return (
     <SidebarProvider className="">
-      <DashboardSiderbar />
+      <DashboardSidebar />
       <main className="flex flex-col h-screen w-screen bg-muted">
+        <DashboardNavbar />
         {children}
       </main>
     </SidebarProvider>

@@ -41,7 +41,7 @@ const secondSection = [
   },
 ];
 
-const DashboardSiderbar = () => {
+const DashboardSidebar = () => {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
 
@@ -87,6 +87,9 @@ const DashboardSiderbar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <div className="px-4 py-2">
+          <Separator className="opacity-10 text-[#5D6B68] " />
+        </div>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -120,4 +123,4 @@ const DashboardSiderbar = () => {
   );
 };
 
-export default DashboardSiderbar;
+export default DashboardSidebar;

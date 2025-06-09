@@ -2,6 +2,16 @@
 
 import GeneratedAvatar from '@/components/shared/generated-avatar';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,16 +20,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { authClient } from '@/lib/auth-client';
 import { ChevronsUpDownIcon, CreditCardIcon, LogOutIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-type Props = {};
-
-const DashboardUserButton = (props: Props) => {
+const DashboardUserButton = () => {
   const router = useRouter();
   const { data, isPending } = authClient.useSession();
+  const isMobile = useIsMobile();
 
   const onLogout = () => {
     authClient.signOut({
@@ -33,9 +43,57 @@ const DashboardUserButton = (props: Props) => {
 
   if (isPending || !data?.user) return null;
 
+  if (isMobile) {
+    return (
+      <Drawer>
+        <DrawerTrigger className="rounded-lg border border-border/10 p-3 w-full flex items-center justify-between gap-x-2 bg-white/5 hover:bg-white/10 overflow-hidden cursor-pointer">
+          {data.user.image ? (
+            <Avatar>
+              <AvatarImage src={data.user.image} />
+            </Avatar>
+          ) : (
+            <GeneratedAvatar
+              seed={data.user.name}
+              variant="initials"
+              className="size-9 mr-3"
+            />
+          )}
+          <div className="flex flex-col gap-0.5 text-left overflow-hidden flex-1 min-w-0">
+            <p className="text-sm truncate w-full font-semibold">
+              {data.user.name}
+            </p>
+            <p className="text-sm truncate w-full">{data.user.email}</p>
+          </div>
+          <ChevronsUpDownIcon className="size-4 shrink-0" />
+        </DrawerTrigger>
+        <DrawerContent className="bg-sidebar-accent  border border-[#5d6b68]">
+          <DrawerHeader>
+            <DrawerTitle className="text-white">{data.user.name}</DrawerTitle>
+            <DrawerDescription>{data.user.email}</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <Button variant="outline">
+              <CreditCardIcon className="size-4 mr-2" />
+              Billing
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                onLogout();
+              }}
+            >
+              <LogOutIcon className="size-4 mr-2" />
+              Sign Out
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="rounded-lg border border-border/10 p-3 w-full flex items-center justify-between gap-2 bg-white/5 hover:bg-white/10 overflow-hidden cursor-pointer">
+      <DropdownMenuTrigger className="rounded-lg border border-border/10 p-3 w-full flex items-center justify-between gap-x-2 bg-white/5 hover:bg-white/10 overflow-hidden cursor-pointer">
         {data.user.image ? (
           <Avatar>
             <AvatarImage src={data.user.image} />
@@ -77,7 +135,7 @@ const DashboardUserButton = (props: Props) => {
           className="cursor-pointer flex items-center justify-between group"
           onClick={onLogout}
         >
-          Log Out
+          Sign Out
           <LogOutIcon className="size-4 text-white group-hover:text-muted-foreground" />
         </DropdownMenuItem>
       </DropdownMenuContent>
