@@ -114,9 +114,9 @@ const DashboardUserButton = () => {
         <ChevronsUpDownIcon className="size-4 shrink-0" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
+        align="center"
         side="top"
-        className="w-72 bg-sidebar-accent/80 text-white border border-[#5d6b68]"
+        className="w-60 bg-sidebar-accent/80 text-white border border-[#5d6b68]"
       >
         <DropdownMenuLabel>
           <div className="flex flex-col gap-1">
