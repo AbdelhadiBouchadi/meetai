@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Separator } from '@/components/ui/separator';
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -11,39 +11,39 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
-import { BotIcon, StarIcon, VideoIcon } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react';
-import DashboardUserButton from './dashboard-user-button';
+} from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
+import { BotIcon, StarIcon, VideoIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
+import DashboardUserButton from "./dashboard-user-button";
 
 const firstSection = [
   {
     icon: VideoIcon,
-    label: 'Meeting',
-    href: '/meetings',
+    label: "Meeting",
+    href: "/meetings",
   },
   {
     icon: BotIcon,
-    label: 'Agents',
-    href: '/agents',
+    label: "Agents",
+    href: "/agents",
   },
 ];
 
 const secondSection = [
   {
     icon: StarIcon,
-    label: 'Upgrade',
-    href: '/upgrade',
+    label: "Upgrade",
+    href: "/upgrade",
   },
 ];
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <Sidebar>
@@ -59,7 +59,7 @@ const DashboardSidebar = () => {
         </Link>
       </SidebarHeader>
       <div className="px-4 py-2">
-        <Separator className="opacity-10 text-[#5D6B68] " />
+        <Separator className="text-[#5D6B68] opacity-10" />
       </div>
       <SidebarContent>
         <SidebarGroup>
@@ -70,15 +70,15 @@ const DashboardSidebar = () => {
                   <SidebarMenuButton
                     asChild
                     className={cn(
-                      'h-10 hover:bg-linear-to-r/oklch border border-transparent hover:border-[#5d6b68]/10 from-sidebar-accent from-5% via-30% via-sidebar/50 to-sidebar/50 ',
+                      "from-sidebar-accent via-sidebar/50 to-sidebar/50 h-10 border border-transparent from-5% via-30% hover:border-[#5d6b68]/10 hover:bg-linear-to-r/oklch",
                       isActive(item.href) &&
-                        'bg-linear-to-r/oklch border border-[#5d6b68]/10'
+                        "border border-[#5d6b68]/10 bg-linear-to-r/oklch",
                     )}
                   >
                     <Link href={item.href}>
-                      <item.icon className="size-5 " />
+                      <item.icon className="size-5" />
                       <span className="text-sm font-medium tracking-tight">
-                        {item.label}{' '}
+                        {item.label}{" "}
                       </span>
                     </Link>
                   </SidebarMenuButton>
@@ -88,7 +88,7 @@ const DashboardSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
         <div className="px-4 py-2">
-          <Separator className="opacity-10 text-[#5D6B68] " />
+          <Separator className="text-[#5D6B68] opacity-10" />
         </div>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -98,15 +98,15 @@ const DashboardSidebar = () => {
                   <SidebarMenuButton
                     asChild
                     className={cn(
-                      'h-10 hover:bg-linear-to-r/oklch border border-transparent hover:border-[#5d6b68]/10 from-sidebar-accent from-5% via-30% via-sidebar/50 to-sidebar/50 ',
+                      "from-sidebar-accent via-sidebar/50 to-sidebar/50 h-10 border border-transparent from-5% via-30% hover:border-[#5d6b68]/10 hover:bg-linear-to-r/oklch",
                       isActive(item.href) &&
-                        'bg-linear-to-r/oklch border border-[#5d6b68]/10'
+                        "border border-[#5d6b68]/10 bg-linear-to-r/oklch",
                     )}
                   >
                     <Link href={item.href}>
-                      <item.icon className="size-5 " />
+                      <item.icon className="size-5" />
                       <span className="text-sm font-medium tracking-tight">
-                        {item.label}{' '}
+                        {item.label}{" "}
                       </span>
                     </Link>
                   </SidebarMenuButton>
