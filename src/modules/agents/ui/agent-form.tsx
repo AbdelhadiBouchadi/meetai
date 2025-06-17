@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { z } from 'zod';
-import { useTRPC } from '@/trpc/client';
-import { AgentGetOne } from '../types';
-import { useRouter } from 'next/navigation';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-import { agentInsertSchema } from '../schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from "zod";
+import { useTRPC } from "@/trpc/client";
+import { AgentGetOne } from "../types";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { agentInsertSchema } from "../schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -15,13 +15,13 @@ import {
   FormLabel,
   FormMessage,
   FormItem,
-} from '@/components/ui/form';
-import GeneratedAvatar from '@/components/shared/generated-avatar';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Loader2Icon } from 'lucide-react';
-import { toast } from 'sonner';
+} from "@/components/ui/form";
+import GeneratedAvatar from "@/components/shared/generated-avatar";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Loader2Icon } from "lucide-react";
+import { toast } from "sonner";
 
 interface AgentFormProps {
   onSuccess?: () => void;
@@ -41,11 +41,13 @@ export const AgentForm = ({
   const createAgent = useMutation(
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions());
+        await queryClient.invalidateQueries(
+          trpc.agents.getMany.queryOptions({}),
+        );
 
         if (initialValues?.id)
           await queryClient.invalidateQueries(
-            trpc.agents.getOne.queryOptions({ id: initialValues.id })
+            trpc.agents.getOne.queryOptions({ id: initialValues.id }),
           );
 
         onSuccess?.();
@@ -53,14 +55,14 @@ export const AgentForm = ({
       onError: (error) => {
         toast.error(error.message);
       },
-    })
+    }),
   );
 
   const form = useForm<z.infer<typeof agentInsertSchema>>({
     resolver: zodResolver(agentInsertSchema),
     defaultValues: {
-      name: initialValues?.name ?? '',
-      instructions: initialValues?.instructions ?? '',
+      name: initialValues?.name ?? "",
+      instructions: initialValues?.instructions ?? "",
     },
   });
 
@@ -69,7 +71,7 @@ export const AgentForm = ({
 
   const onSubmit = (values: z.infer<typeof agentInsertSchema>) => {
     if (isEdit) {
-      console.log('Update Agent');
+      console.log("Update Agent");
     } else {
       createAgent.mutate(values);
     }
@@ -79,9 +81,9 @@ export const AgentForm = ({
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <GeneratedAvatar
-          seed={form.watch('name')}
+          seed={form.watch("name")}
           variant="botttsneutral"
-          className="border size-16"
+          className="size-16 border"
         />
         <FormField
           name="name"
@@ -128,10 +130,10 @@ export const AgentForm = ({
             {isPending ? (
               <>
                 <Loader2Icon className="mr-2 size-4 animate-spin" />
-                {isEdit ? 'Updating' : 'Creating'}
+                {isEdit ? "Updating" : "Creating"}
               </>
             ) : (
-              <span>{isEdit ? 'Update' : 'Create'}</span>
+              <span>{isEdit ? "Update" : "Create"}</span>
             )}
           </Button>
         </div>

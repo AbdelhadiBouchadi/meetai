@@ -3,15 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { AgentGetOne } from "../types";
 import GeneratedAvatar from "@/components/shared/generated-avatar";
-import { CornerDownRightIcon, CornerRightDown, VideoIcon } from "lucide-react";
+import { CornerDownRightIcon, VideoIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
 
 export const columns: ColumnDef<AgentGetOne>[] = [
   {
@@ -46,8 +39,7 @@ export const columns: ColumnDef<AgentGetOne>[] = [
       >
         <VideoIcon className="text-primary/50" />
         {row.original.meetingCount}{" "}
-        {/* {row.original.meetingCount === 1 ? "meeting" : "meetings"} */}5
-        meetings
+        {row.original.meetingCount === 1 ? "meeting" : "meetings"}
       </Badge>
     ),
   },
