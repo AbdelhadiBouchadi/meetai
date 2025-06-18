@@ -1,18 +1,37 @@
 "use client";
 
+import { DataTable } from "@/components/shared/data-table";
 import ErrorState from "@/components/shared/error-state";
 import LoadingState from "@/components/shared/loading-state";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
+import { columns } from "./columns";
+import EmptyState from "@/components/shared/empty-state";
+import { useRouter } from "next/navigation";
+import DataPagination from "@/components/shared/data-pagination";
 
-type Props = {};
-
-const MeetingsView = (props: Props) => {
+const MeetingsView = () => {
+  const router = useRouter();
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}));
 
-  return <div className="overflow-x-scroll">{JSON.stringify(data)}</div>;
+  return (
+    <div className="flex flex-1 flex-col gap-y-4 px-4 pb-4 md:px-8">
+      <DataTable
+        data={data.items}
+        columns={columns}
+        onRowClick={(row) => router.push(`/meetings/${row.id}`)}
+      />
+      {/* <DataPagination /> */}
+      {data.items.length === 0 && (
+        <EmptyState
+          title="Create your first meeting"
+          description="Schedule a meeting to connect with others. Each meetings enables you to collaborate, share ideas, and interact with participants in real time"
+        />
+      )}
+    </div>
+  );
 };
 
 export const MeetingsViewLoading = () => {
