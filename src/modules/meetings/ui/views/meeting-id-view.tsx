@@ -18,6 +18,10 @@ import { UseConfirm } from "../../hooks/use-confirm";
 import UpdateAgentDialog from "@/modules/agents/ui/update-agent-dialog";
 import MeetingIdViewHeader from "./meeting-id-view-header";
 import UpdateMeetingDialog from "./update-meeting-dialog";
+import { UpcomingState } from "./upcoming-state";
+import { ActiveState } from "./active-state";
+import { CanceledState } from "./canceled-state";
+import { ProcessingState } from "./processing-state";
 
 type Props = {
   meetingId: string;
@@ -61,6 +65,12 @@ const MeetingIdView = ({ meetingId }: Props) => {
     await removeMeeting.mutateAsync({ id: meetingId });
   };
 
+  const isActive = data.status === "active";
+  const isCompleted = data.status === "completed";
+  const isUpcoming = data.status === "upcoming";
+  const isProcessing = data.status === "processing";
+  const isCanceled = data.status === "canceled";
+
   return (
     <>
       <RemoveConfirmation />
@@ -80,32 +90,18 @@ const MeetingIdView = ({ meetingId }: Props) => {
           onRemove={handleRemoveMeeting}
         />
 
-        <div className="rounded-lg border bg-white">
-          <div className="col-span-5 flex flex-col gap-y-5 px-4 py-5">
-            <div className="flex items-center gap-x-3">
-              <GeneratedAvatar
-                variant="botttsneutral"
-                seed={data.agent.name}
-                className="size-10"
-              />
-              <h2 className="text-2xl font-medium">{data.name}</h2>
-            </div>
-            {/* <Badge
-              variant="outline"
-              className="flex items-center gap-x-2 py-2 [&>svg]:size-4"
-            >
-              <VideoIcon className="text-primary/50" />
-              {data.meetingCount}{" "}
-              {data.meetingCount === 1 ? "meeting" : "meetings"}
-            </Badge>
-            <div className="flex flex-col gap-y-4">
-              <p className="text-lg font-medium">Insctruction</p>
-              <p className="text-neutral-800">{data.instructions}</p>
-            </div> */}
-          </div>
-        </div>
+        {isCanceled && <CanceledState />}
+        {isUpcoming && (
+          <UpcomingState
+            meetingId={meetingId}
+            onCancelMeeting={() => {}}
+            isCanceling={false}
+          />
+        )}
+        {isActive && <ActiveState meetingId={meetingId} />}
+        {isProcessing && <ProcessingState />}
+        {isCompleted && <div className=""></div>}
       </div>
-      {JSON.stringify(data)}
     </>
   );
 };
