@@ -50,7 +50,7 @@ export const meetingsRouter = createTRPCRouter({
         })
         .returning();
 
-      // TODO: Create Stream Call
+      // TODO: Create Stream Call / DONE
       const call = streamVideo.video.call("default", createdMeeting.id);
       await call.create({
         data: {
