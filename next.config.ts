@@ -2,7 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
-  allowedDevOrigins: ["local-origin.dev", "*.local-origin.dev"],
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/meetings",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

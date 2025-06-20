@@ -15,6 +15,8 @@ import GeneratedAvatar from "@/components/shared/generated-avatar";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { formatDuration } from "@/lib/utils";
+import { Transcript } from "../transcript";
+import { ChatProvider } from "../chat-provider";
 
 type Props = {
   data: MeetingGetOne;
@@ -147,6 +149,10 @@ export const CompletedState = ({ data }: Props) => {
           </div>
         </TabsContent>
 
+        <TabsContent value="transcript">
+          <Transcript meetingId={data.id} />
+        </TabsContent>
+
         <TabsContent value="recording">
           <div className="rounded-lg border bg-white px-4 py-5">
             <video
@@ -155,6 +161,9 @@ export const CompletedState = ({ data }: Props) => {
               controls
             />
           </div>
+        </TabsContent>
+        <TabsContent value="chat">
+          <ChatProvider meetingId={data.id} meetingName={data.name} />
         </TabsContent>
       </Tabs>
     </div>
