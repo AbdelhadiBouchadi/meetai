@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Card, CardContent } from '@/components/ui/card';
-import React, { useState } from 'react';
-import { FcGoogle } from 'react-icons/fc';
-import { FaGithub } from 'react-icons/fa';
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent } from "@/components/ui/card";
+import React, { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import {
   Form,
   FormControl,
@@ -14,18 +14,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Alert, AlertTitle } from '@/components/ui/alert';
-import { Loader2, OctagonAlertIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { authClient } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Loader2, OctagonAlertIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(1, { message: 'Password is required' }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(1, { message: "Password is required" }),
 });
 
 const SignInView = () => {
@@ -36,8 +37,8 @@ const SignInView = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
@@ -49,29 +50,29 @@ const SignInView = () => {
       {
         email: data.email,
         password: data.password,
-        callbackURL: '/',
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
           setPending(false);
-          router.push('/');
+          router.push("/");
         },
         onError: ({ error }) => {
           setPending(false);
           setError(error.message);
         },
-      }
+      },
     );
   };
 
-  const onSocialSubmit = (provider: 'github' | 'google') => {
+  const onSocialSubmit = (provider: "github" | "google") => {
     setPending(true);
     setError(null);
 
     authClient.signIn.social(
       {
         provider: provider,
-        callbackURL: '/',
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
@@ -81,7 +82,7 @@ const SignInView = () => {
           setPending(false);
           setError(error.message);
         },
-      }
+      },
     );
   };
 
@@ -138,7 +139,7 @@ const SignInView = () => {
                 </div>
                 {!!error && (
                   <Alert className="bg-destructive/10 border-none">
-                    <OctagonAlertIcon className="size-4 !text-destructive" />
+                    <OctagonAlertIcon className="!text-destructive size-4" />
                     <AlertTitle className="font-semibold">{error}</AlertTitle>
                   </Alert>
                 )}
@@ -149,7 +150,7 @@ const SignInView = () => {
                       Signing in...
                     </>
                   ) : (
-                    'Sign In'
+                    "Sign In"
                   )}
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -164,7 +165,7 @@ const SignInView = () => {
                     className="w-full"
                     disabled={pending}
                     onClick={() => {
-                      onSocialSubmit('google');
+                      onSocialSubmit("google");
                     }}
                   >
                     {pending ? (
@@ -180,7 +181,7 @@ const SignInView = () => {
                     className="w-full"
                     disabled={pending}
                     onClick={() => {
-                      onSocialSubmit('github');
+                      onSocialSubmit("github");
                     }}
                   >
                     {pending ? (
@@ -192,7 +193,7 @@ const SignInView = () => {
                   </Button>
                 </div>
                 <div className="text-center text-sm">
-                  Don&apos;t have an account?{' '}
+                  Don&apos;t have an account?{" "}
                   <Link
                     href="/sign-up"
                     className="underline underline-offset-4"
@@ -203,15 +204,21 @@ const SignInView = () => {
               </div>
             </form>
           </Form>
-          <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center ">
-            <img src="/logo.svg" alt="Image " className="size-[148px] " />
+          <div className="from-sidebar-accent to-sidebar relative hidden flex-col items-center justify-center gap-y-4 bg-radial md:flex">
+            <Image
+              src="/logo.svg"
+              alt="Image "
+              className="object-cover"
+              width={148}
+              height={148}
+            />
             <p className="text-2xl font-semibold text-white">Meet.AI</p>
           </div>
         </CardContent>
       </Card>
 
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4 ">
-        By clicking continue, you agree to our <a href="#">Terms Of Service</a>{' '}
+      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+        By clicking continue, you agree to our <a href="#">Terms Of Service</a>{" "}
         and <a href="#">Privacy Policy</a>
       </div>
     </div>

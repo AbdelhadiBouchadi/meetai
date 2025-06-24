@@ -20,7 +20,6 @@ type Props = {
   onSearch?: (value: string) => void;
   value: string;
   placeholder?: string;
-  isSearchable?: boolean;
   className?: string;
 };
 
@@ -31,7 +30,6 @@ const CommandSelect = ({
   value,
   placeholder = "Select an option",
   className,
-  isSearchable,
 }: Props) => {
   const [open, setOpen] = useState(false);
   const selectedOption = options.find((option) => option.value === value);

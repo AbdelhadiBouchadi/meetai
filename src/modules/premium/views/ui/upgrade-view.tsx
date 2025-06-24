@@ -22,7 +22,7 @@ const UpgradeView = () => {
     <div className="flex flex-1 flex-col gap-y-10 px-4 py-4 md:px-8">
       <div className="mt-4 flex flex-1 flex-col items-center gap-y-10">
         <h5 className="text-2xl font-medium md:text-3xl">
-          You're on the{" "}
+          You&apos;re on the{" "}
           <span className="text-primary font-semibold">
             {currentSubscription?.name ?? "Free"}
           </span>{" "}

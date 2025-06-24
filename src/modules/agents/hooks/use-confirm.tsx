@@ -1,6 +1,5 @@
 import ResponsiveDialog from "@/components/shared/responsive-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { VariantProps } from "class-variance-authority";
+import { Button } from "@/components/ui/button";
 import React, { JSX, useState } from "react";
 
 export const UseConfirm = (

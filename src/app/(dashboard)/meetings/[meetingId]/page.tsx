@@ -1,5 +1,4 @@
 import { auth } from "@/lib/auth";
-import { loadSearchParams } from "@/modules/meetings/params";
 import MeetingIdView, {
   MeetingIdError,
   MeetingIdLoading,
@@ -32,8 +31,6 @@ const MeetingIdPage = async ({ params }: Props) => {
   void queryClient.prefetchQuery(
     trpc.meetings.getOne.queryOptions({ id: meetingId }),
   );
-
-  // TODO: prefetch getTranscript
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

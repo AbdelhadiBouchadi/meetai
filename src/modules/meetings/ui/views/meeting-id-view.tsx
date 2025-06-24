@@ -9,13 +9,9 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import React, { useState } from "react";
-import GeneratedAvatar from "@/components/shared/generated-avatar";
-import { Badge } from "@/components/ui/badge";
-import { VideoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { UseConfirm } from "../../hooks/use-confirm";
-import UpdateAgentDialog from "@/modules/agents/ui/update-agent-dialog";
 import MeetingIdViewHeader from "./meeting-id-view-header";
 import UpdateMeetingDialog from "./update-meeting-dialog";
 import { UpcomingState } from "./upcoming-state";
@@ -100,13 +96,7 @@ const MeetingIdView = ({ meetingId }: Props) => {
         />
 
         {isCanceled && <CanceledState />}
-        {isUpcoming && (
-          <UpcomingState
-            meetingId={meetingId}
-            onCancelMeeting={() => {}}
-            isCanceling={false}
-          />
-        )}
+        {isUpcoming && <UpcomingState meetingId={meetingId} />}
         {isActive && <ActiveState meetingId={meetingId} />}
         {isProcessing && <ProcessingState />}
         {isCompleted && <CompletedState data={data} />}
