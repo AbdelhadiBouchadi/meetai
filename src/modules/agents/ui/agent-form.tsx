@@ -45,6 +45,10 @@ export const AgentForm = ({
           trpc.agents.getMany.queryOptions({}),
         );
 
+        await queryClient.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions(),
+        );
+
         if (initialValues?.id)
           await queryClient.invalidateQueries(
             trpc.agents.getOne.queryOptions({ id: initialValues.id }),
@@ -54,6 +58,10 @@ export const AgentForm = ({
       },
       onError: (error) => {
         toast.error(error.message);
+
+        if (error.data?.code === "FORBIDDEN") {
+          router.push("/upgrade");
+        }
       },
     }),
   );

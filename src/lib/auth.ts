@@ -2,6 +2,8 @@ import { db } from "@/database";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import * as schema from "@/database/schema";
+import { polar, checkout, portal } from "@polar-sh/better-auth";
+import { polarClient } from "./polar";
 
 export const auth = betterAuth({
   emailAndPassword: {
@@ -23,5 +25,17 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-  trustedOrigins: ["https://true-singularly-redfish.ngrok-free.app"],
+  plugins: [
+    polar({
+      client: polarClient,
+      createCustomerOnSignUp: true,
+      use: [
+        checkout({
+          authenticatedUsersOnly: true,
+          successUrl: "/upgrade",
+        }),
+        portal(),
+      ],
+    }),
+  ],
 });

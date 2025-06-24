@@ -1,12 +1,20 @@
-import { auth } from '@/lib/auth';
-import { initTRPC, TRPCError } from '@trpc/server';
-import { headers } from 'next/headers';
-import { cache } from 'react';
+import { db } from "@/database";
+import { agents, meetings } from "@/database/schema";
+import { auth } from "@/lib/auth";
+import { polarClient } from "@/lib/polar";
+import {
+  MAX_FREE_AGENTS,
+  MAX_FREE_MEETINGS,
+} from "@/modules/premium/constants";
+import { initTRPC, TRPCError } from "@trpc/server";
+import { count, eq } from "drizzle-orm";
+import { headers } from "next/headers";
+import { cache } from "react";
 export const createTRPCContext = cache(async () => {
   /**
    * @see: https://trpc.io/docs/server/context
    */
-  return { userId: 'user_123' };
+  return { userId: "user_123" };
 });
 // Avoid exporting the entire t-object
 // since it's not very descriptive.
@@ -27,7 +35,43 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
     headers: await headers(),
   });
 
-  if (!session) throw new TRPCError({ code: 'UNAUTHORIZED' });
+  if (!session) throw new TRPCError({ code: "UNAUTHORIZED" });
 
   return next({ ctx: { ...ctx, auth: session } });
 });
+
+export const premiumProcedure = (entity: "meetings" | "agents") =>
+  protectedProcedure.use(async ({ ctx, next }) => {
+    const customer = await polarClient.customers.getStateExternal({
+      externalId: ctx.auth.user.id,
+    });
+
+    const [userMeetings] = await db
+      .select({ count: count(meetings.id) })
+      .from(meetings)
+      .where(eq(meetings.userId, ctx.auth.user.id));
+
+    const [userAgents] = await db
+      .select({ count: count(agents.id) })
+      .from(agents)
+      .where(eq(agents.userId, ctx.auth.user.id));
+
+    const isPremium = customer.activeSubscriptions.length > 0;
+    const isFreeAgentsLimitReacher = userAgents.count >= MAX_FREE_AGENTS;
+    const isFreeMeetingsLimitReacher = userMeetings.count >= MAX_FREE_MEETINGS;
+
+    const shouldThrowMeetingError =
+      entity === "meetings" && isFreeMeetingsLimitReacher && !isPremium;
+
+    const shouldThrowAgentError =
+      entity === "agents" && isFreeAgentsLimitReacher && !isPremium;
+
+    if (shouldThrowMeetingError || shouldThrowAgentError) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: `You have reached the free limit for ${entity}. Please upgrade to continue using this feature.`,
+      });
+    }
+
+    return next({ ctx: { ...ctx, customer } });
+  });

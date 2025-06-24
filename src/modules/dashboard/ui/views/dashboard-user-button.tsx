@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import GeneratedAvatar from '@/components/shared/generated-avatar';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import GeneratedAvatar from "@/components/shared/generated-avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
@@ -11,7 +11,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer';
+} from "@/components/ui/drawer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,12 +19,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { authClient } from '@/lib/auth-client';
-import { ChevronsUpDownIcon, CreditCardIcon, LogOutIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+} from "@/components/ui/dropdown-menu";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { authClient } from "@/lib/auth-client";
+import { ChevronsUpDownIcon, CreditCardIcon, LogOutIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 const DashboardUserButton = () => {
   const router = useRouter();
@@ -35,7 +35,7 @@ const DashboardUserButton = () => {
     authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push('/sign-in');
+          router.push("/sign-in");
         },
       },
     });
@@ -46,7 +46,7 @@ const DashboardUserButton = () => {
   if (isMobile) {
     return (
       <Drawer>
-        <DrawerTrigger className="rounded-lg border border-border/10 p-3 w-full flex items-center justify-between gap-x-2 bg-white/5 hover:bg-white/10 overflow-hidden cursor-pointer">
+        <DrawerTrigger className="border-border/10 flex w-full cursor-pointer items-center justify-between gap-x-2 overflow-hidden rounded-lg border bg-white/5 p-3 hover:bg-white/10">
           {data.user.image ? (
             <Avatar>
               <AvatarImage src={data.user.image} />
@@ -55,25 +55,28 @@ const DashboardUserButton = () => {
             <GeneratedAvatar
               seed={data.user.name}
               variant="initials"
-              className="size-9 mr-3"
+              className="mr-3 size-9"
             />
           )}
-          <div className="flex flex-col gap-0.5 text-left overflow-hidden flex-1 min-w-0">
-            <p className="text-sm truncate w-full font-semibold">
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5 overflow-hidden text-left">
+            <p className="w-full truncate text-sm font-semibold">
               {data.user.name}
             </p>
-            <p className="text-sm truncate w-full">{data.user.email}</p>
+            <p className="w-full truncate text-sm">{data.user.email}</p>
           </div>
           <ChevronsUpDownIcon className="size-4 shrink-0" />
         </DrawerTrigger>
-        <DrawerContent className="bg-sidebar-accent  border border-[#5d6b68]">
+        <DrawerContent className="bg-sidebar-accent border border-[#5d6b68]">
           <DrawerHeader>
             <DrawerTitle className="text-white">{data.user.name}</DrawerTitle>
             <DrawerDescription>{data.user.email}</DrawerDescription>
           </DrawerHeader>
           <DrawerFooter>
-            <Button variant="outline">
-              <CreditCardIcon className="size-4 mr-2" />
+            <Button
+              variant="outline"
+              onClick={() => authClient.customer.portal()}
+            >
+              <CreditCardIcon className="mr-2 size-4" />
               Billing
             </Button>
             <Button
@@ -82,7 +85,7 @@ const DashboardUserButton = () => {
                 onLogout();
               }}
             >
-              <LogOutIcon className="size-4 mr-2" />
+              <LogOutIcon className="mr-2 size-4" />
               Sign Out
             </Button>
           </DrawerFooter>
@@ -93,7 +96,7 @@ const DashboardUserButton = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="rounded-lg border border-border/10 p-3 w-full flex items-center justify-between gap-x-2 bg-white/5 hover:bg-white/10 overflow-hidden cursor-pointer">
+      <DropdownMenuTrigger className="border-border/10 flex w-full cursor-pointer items-center justify-between gap-x-2 overflow-hidden rounded-lg border bg-white/5 p-3 hover:bg-white/10">
         {data.user.image ? (
           <Avatar>
             <AvatarImage src={data.user.image} />
@@ -102,41 +105,44 @@ const DashboardUserButton = () => {
           <GeneratedAvatar
             seed={data.user.name}
             variant="initials"
-            className="size-9 mr-3"
+            className="mr-3 size-9"
           />
         )}
-        <div className="flex flex-col gap-0.5 text-left overflow-hidden flex-1 min-w-0">
-          <p className="text-sm truncate w-full font-semibold">
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5 overflow-hidden text-left">
+          <p className="w-full truncate text-sm font-semibold">
             {data.user.name}
           </p>
-          <p className="text-sm truncate w-full">{data.user.email}</p>
+          <p className="w-full truncate text-sm">{data.user.email}</p>
         </div>
         <ChevronsUpDownIcon className="size-4 shrink-0" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="center"
         side="top"
-        className="w-60 bg-sidebar-accent/80 text-white border border-[#5d6b68]"
+        className="bg-sidebar-accent/80 w-60 border border-[#5d6b68] text-white"
       >
         <DropdownMenuLabel>
           <div className="flex flex-col gap-1">
-            <span className="font-medium truncate">{data.user.name}</span>
-            <span className="text-sm font-normal text-muted-foreground truncate">
+            <span className="truncate font-medium">{data.user.name}</span>
+            <span className="text-muted-foreground truncate text-sm font-normal">
               {data.user.email}
             </span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-[#5d6b68]" />
-        <DropdownMenuItem className="cursor-pointer flex items-center justify-between group">
+        <DropdownMenuItem
+          className="group flex cursor-pointer items-center justify-between"
+          onClick={() => authClient.customer.portal()}
+        >
           Billing
-          <CreditCardIcon className="size-4 text-white group-hover:text-muted-foreground" />
+          <CreditCardIcon className="group-hover:text-muted-foreground size-4 text-white" />
         </DropdownMenuItem>
         <DropdownMenuItem
-          className="cursor-pointer flex items-center justify-between group"
+          className="group flex cursor-pointer items-center justify-between"
           onClick={onLogout}
         >
           Sign Out
-          <LogOutIcon className="size-4 text-white group-hover:text-muted-foreground" />
+          <LogOutIcon className="group-hover:text-muted-foreground size-4 text-white" />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
